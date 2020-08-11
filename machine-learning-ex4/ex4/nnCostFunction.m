@@ -78,12 +78,11 @@ J = J/m + (lambda/(2*m)) * (sum(sum(subTheta1 .* subTheta1)) + sum(sum(subTheta2
 
 % First get the error for each unit in layer 3
 delt3 = a3 - vec_y; % vec_y has labels in vectors. delt3 is 5000 X 10
-delt2 = delt3 * Theta2(:,2:end) .* sigmoidGradient(z2); % delt2 is 5000 X 26
-D2 = delt3 * a3';
-D2 = sum(D2)/m;
-D1 = delt2 * a2';
-D1 = sum(D1)/m;
-grad = [D1(:);D2(:)] % unroll for grad
+delt2 = delt3 * Theta2(:, 2:end) .* sigmoidGradient(z2); % delt2 is 5000 X 26
+D2 = delt3' * [ones(size(X, 1), 1) a2];
+Theta2_grad = D2/m;
+D1 = delt2' * X;
+Theta1_grad = D1/m;
 
 % Part 3: Implement regularization with the cost function and gradients.
 %
