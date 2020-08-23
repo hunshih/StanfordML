@@ -91,11 +91,10 @@ Theta1_grad = D1/m;
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
+Theta1(:,1) = zeros(size(Theta1, 1), 1);
+Theta1_grad = Theta1_grad + (lambda/m) * (Theta1)
+Theta2(:,1) = zeros(size(Theta2, 1), 1);
+Theta2_grad = Theta2_grad + (lambda/m) * (Theta2)
 
 
 
