@@ -40,10 +40,19 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+J = sum( sum(((((X * Theta') - Y) .* R) .^ 2)) ) / 2; % only count the rated movies
 
+% First get movie grad
+for movie = 1:size(X_grad, 1)
+	tmp = ( ((Theta * X(movie, :)')' - Y(movie, :)) .* R(movie, :) ) * Theta;
+	X_grad(movie, :) = tmp;
+endfor
 
-
-
+% And then get user grad
+for user = 1:size(Theta_grad, 1)
+	tmp = ( (X * Theta(user, :)' - Y(:, user)) .* R(:, user) )' * X;
+	Theta_grad(user, :) = tmp;
+endfor
 
 
 
