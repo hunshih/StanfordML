@@ -39,19 +39,20 @@ Theta_grad = zeros(size(Theta));
 %        Theta_grad - num_users x num_features matrix, containing the 
 %                     partial derivatives w.r.t. to each element of Theta
 %
-
-J = sum( sum(((((X * Theta') - Y) .* R) .^ 2)) ) / 2; % only count the rated movies
+userReg = sum(sum(Theta .^ 2)) * lambda /2;
+movieReg = sum(sum(X .^ 2)) * lambda /2;
+J = sum( sum(((((X * Theta') - Y) .* R) .^ 2)) ) / 2 + userReg + movieReg; % only count the rated movies
 
 % First get movie grad
 for movie = 1:size(X_grad, 1)
 	tmp = ( ((Theta * X(movie, :)')' - Y(movie, :)) .* R(movie, :) ) * Theta;
-	X_grad(movie, :) = tmp;
+	X_grad(movie, :) = tmp + lambda * X(movie, :);
 endfor
 
 % And then get user grad
 for user = 1:size(Theta_grad, 1)
 	tmp = ( (X * Theta(user, :)' - Y(:, user)) .* R(:, user) )' * X;
-	Theta_grad(user, :) = tmp;
+	Theta_grad(user, :) = tmp + lambda * Theta(user, :);
 endfor
 
 
